@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEN 900 — Research Methodology & Scientific Writing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1623;
+    --surface: #19243a;
+    --surface2: #1e2d47;
+    --border: #2a3f60;
+    --text: #e4eaf5;
+    --muted: #7a8fad;
+    --gold: #f0b429;
+    --gold-dim: rgba(240,180,41,0.12);
+
+    --l1: #4f9cf9;   --l1-dim: rgba(79,156,249,0.12);
+    --l2: #34c789;   --l2-dim: rgba(52,199,137,0.12);
+    --l3: #f97340;   --l3-dim: rgba(249,115,64,0.12);
+    --l4: #a78bfa;   --l4-dim: rgba(167,139,250,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── TOP HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0a0f1e 0%, #121c35 60%, #0f1623 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 120% at 80% 50%, rgba(79,156,249,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 42px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    max-width: 640px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  /* ── TAB NAV ── */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    padding: 0 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .18s, border-color .18s;
+    position: relative;
+    top: 1px;
+  }
+  .tab-btn .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tab-btn[data-lec="1"] .dot { background: var(--l1); }
+  .tab-btn[data-lec="2"] .dot { background: var(--l2); }
+  .tab-btn[data-lec="3"] .dot { background: var(--l3); }
+  .tab-btn[data-lec="4"] .dot { background: var(--l4); }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: #fff; }
+  .tab-btn[data-lec="1"].active { border-color: var(--l1); }
+  .tab-btn[data-lec="2"].active { border-color: var(--l2); }
+  .tab-btn[data-lec="3"].active { border-color: var(--l3); }
+  .tab-btn[data-lec="4"].active { border-color: var(--l4); }
+
+  /* ── CONTENT AREA ── */
+  .content-area { max-width: 900px; margin: 0 auto; padding: 48px 48px 80px; }
+
+  .lecture-panel { display: none; }
+  .lecture-panel.active { display: block; }
+
+  /* ── LECTURE HERO ── */
+  .lec-hero {
+    padding: 32px 36px;
+    border-radius: 12px;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .lec-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: .07;
+    border-radius: 12px;
+  }
+  .lec-hero[data-lec="1"]::before { background: var(--l1); }
+  .lec-hero[data-lec="2"]::before { background: var(--l2); }
+  .lec-hero[data-lec="3"]::before { background: var(--l3); }
+  .lec-hero[data-lec="4"]::before { background: var(--l4); }
+
+  .lec-num {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  [data-lec="1"] .lec-num { color: var(--l1); }
+  [data-lec="2"] .lec-num { color: var(--l2); }
+  [data-lec="3"] .lec-num { color: var(--l3); }
+  [data-lec="4"] .lec-num { color: var(--l4); }
+
+  .lec-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .lec-hero .tagline {
+    color: var(--muted);
+    font-size: 13.5px;
+    max-width: 580px;
+  }
+
+  /* ── OBJECTIVES STRIP ── */
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .obj-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .obj-num {
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+    padding-top: 1px;
+  }
+  [data-lec="1"] .obj-num { color: var(--l1); }
+  [data-lec="2"] .obj-num { color: var(--l2); }
+  [data-lec="3"] .obj-num { color: var(--l3); }
+  [data-lec="4"] .obj-num { color: var(--l4); }
+
+  .obj-item p { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 44px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 12px;
+  }
+  .concept-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 7px;
+  }
+  .concept-card p, .concept-card li {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .concept-card ul { padding-left: 18px; }
+  .concept-card li { margin-bottom: 4px; }
+
+  .concept-card.highlight {
+    border-left: 3px solid var(--gold);
+    background: linear-gradient(to right, rgba(240,180,41,0.05), var(--surface));
+  }
+  .concept-card.highlight h4 { color: var(--gold); }
+
+  /* ── EXAMPLE BOX ── */
+  .example-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  [data-lec="1"] .example-box { border-left-color: var(--l1); }
+  [data-lec="2"] .example-box { border-left-color: var(--l2); }
+  [data-lec="3"] .example-box { border-left-color: var(--l3); }
+  [data-lec="4"] .example-box { border-left-color: var(--l4); }
+
+  .example-box .ex-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  [data-lec="1"] .example-box .ex-label { color: var(--l1); }
+  [data-lec="2"] .example-box .ex-label { color: var(--l2); }
+  [data-lec="3"] .example-box .ex-label { color: var(--l3); }
+  [data-lec="4"] .example-box .ex-label { color: var(--l4); }
+
+  .example-box p { color: var(--muted); line-height: 1.6; }
+
+  /* ── COMPARE GRID ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .compare-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .compare-col h5 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .compare-col ul { padding-left: 16px; }
+  .compare-col li { font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+
+  /* ── PROCESS FLOW ── */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: -16px;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+    border: 2px solid;
+    background: var(--bg);
+  }
+  [data-lec="1"] .step-circle { color: var(--l1); border-color: var(--l1); }
+  [data-lec="2"] .step-circle { color: var(--l2); border-color: var(--l2); }
+  [data-lec="3"] .step-circle { color: var(--l3); border-color: var(--l3); }
+  [data-lec="4"] .step-circle { color: var(--l4); border-color: var(--l4); }
+
+  .step-body { padding: 4px 0 24px; }
+  .step-body h4 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .step-body p { font-size: 13px; color: var(--muted); }
+
+  /* ── TAG PILLS ── */
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .pill {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .data-table th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(42,63,96,0.5);
+    color: var(--text);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── FORMULA BLOCK ── */
+  .formula-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--gold);
+    text-align: center;
+    letter-spacing: .02em;
+  }
+  .formula-block .formula-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+  }
+
+  /* ── KEY TAKEAWAY ── */
+  .key-takeaway {
+    background: linear-gradient(135deg, rgba(240,180,41,0.08), rgba(240,180,41,0.03));
+    border: 1px solid rgba(240,180,41,0.3);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 44px;
+  }
+  .key-takeaway h3 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .key-takeaway p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* ── TYPES GRID ── */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .type-card .icon { font-size: 24px; margin-bottom: 10px; display: block; }
+  .type-card h4 { font-size: 13.5px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .type-card p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ── TRAITS LIST ── */
+  .traits-list { display: flex; flex-direction: column; gap: 10px; }
+  .trait-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .trait-icon { font-size: 18px; margin-top: 1px; }
+  .trait-item h4 { font-size: 13.5px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .trait-item p { font-size: 13px; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    header, .tab-nav { padding-left: 20px; padding-right: 20px; }
+    .content-area { padding: 28px 20px 60px; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">GEN 900 · Study Summary</div>
+  <h1>Research Methodology &amp; Scientific Writing</h1>
+  <p>Interactive lecture notes · Dr. Wael Taha</p>
+</header>
+
+<nav class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-lec="1" onclick="switchTab(1)">
+    <span class="dot"></span> Lecture 1 · Intro to Research
+  </button>
+  <button class="tab-btn" data-lec="2" onclick="switchTab(2)">
+    <span class="dot"></span> Lecture 2 · Scientific Writing
+  </button>
+  <button class="tab-btn" data-lec="3" onclick="switchTab(3)">
+    <span class="dot"></span> Lecture 3 · Data Analysis
+  </button>
+  <button class="tab-btn" data-lec="4" onclick="switchTab(4)">
+    <span class="dot"></span> Lecture 4 · Data Presentation
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     LECTURE 1
+════════════════════════════════════════════════════════ -->
+<main class="content-area">
+<div class="lecture-panel active" id="lec-1" data-lec="1">
+
+  <div class="lec-hero" data-lec="1">
+    <div class="lec-num">Lecture 1</div>
+    <h2>Introduction to Scientific Research</h2>
+    <p class="tagline">What research really is, why it matters, how it works — and what makes a researcher credible.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Learning Objectives</div>
+    <div class="objectives-grid" data-lec="1">
+      <div class="obj-item"><span class="obj-num">01</span><p>Define scientific research and explain its importance</p></div>
+      <div class="obj-item"><span class="obj-num">02</span><p>Identify the main objectives and characteristics of good research</p></div>
+      <div class="obj-item"><span class="obj-num">03</span><p>Distinguish between different types of research</p></div>
+      <div class="obj-item"><span class="obj-num">04</span><p>Understand the main steps of the research process</p></div>
+      <div class="obj-item"><span class="obj-num">05</span><p>Identify the qualities of a successful researcher</p></div>
+      <div class="obj-item"><span class="obj-num">06</span><p>Apply research concepts to engineering problems</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What Is Scientific Research?</div>
+    <div class="concept-card highlight">
+      <h4>Definition</h4>
+      <p>A <strong>systematic and organized process</strong> used to generate new knowledge, verify existing knowledge, explain phenomena, or solve problems — using scientific methods and evidence rather than guessing or personal opinion.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-col">
+        <h5 style="color: var(--muted);">Ordinary Knowledge</h5>
+        <ul>
+          <li>Based on personal experience</li>
+          <li>Relies on opinions and observations</li>
+          <li>Trial and error</li>
+          <li>Hearsay from others</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h5 style="color: var(--l1);">Scientific Knowledge</h5>
+        <ul>
+          <li>Systematic observation</li>
+          <li>Measurements and experiments</li>
+          <li>Evidence and data analysis</li>
+          <li>Verification and replication</li>
+        </ul>
+      </div>
+    </div>
+    <div class="example-box" data-lec="1">
+      <div class="ex-label">Example</div>
+      <p><strong>Opinion:</strong> "The transformer is hot because the weather is hot."<br>
+      <strong>Scientific statement:</strong> "Transformer temperature increased significantly when loading exceeded 90% of rated capacity under high ambient-temperature conditions." — This can be measured, tested, and verified.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Research Process</div>
+    <div class="flow-steps" data-lec="1">
+      <div class="flow-step">
+        <div class="step-circle">1</div>
+        <div class="step-body"><h4>Select a Topic & Identify the Problem</h4><p>Choose a meaningful, researchable problem. E.g., distribution transformers are experiencing frequent failures.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">2</div>
+        <div class="step-body"><h4>Review Previous Studies</h4><p>Understand what has already been done — to avoid duplication and spot research gaps.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">3</div>
+        <div class="step-body"><h4>Define Objectives & Hypotheses</h4><p>State clear, measurable goals. Formulate a testable hypothesis if appropriate.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">4</div>
+        <div class="step-body"><h4>Select Methodology & Collect Data</h4><p>Choose the right research approach. Gather measurements, records, and experimental results.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">5</div>
+        <div class="step-body"><h4>Analyze Data & Discuss Results</h4><p>Apply appropriate statistical methods. Interpret what the numbers mean.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">6</div>
+        <div class="step-body"><h4>Draw Conclusions & Recommendations</h4><p>Answer the research question based on evidence. Suggest practical next steps.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Characteristics of Good Research</div>
+    <div class="traits-list">
+      <div class="trait-item"><span class="trait-icon">🎯</span><div><h4>Objectivity</h4><p>Conclusions must be based on evidence — not personal beliefs or expectations.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">📐</span><div><h4>Accuracy</h4><p>"The measured top-oil temperature reached 92°C" is scientific. "The transformer was hot" is not.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">🔁</span><div><h4>Reliability &amp; Replicability</h4><p>The same method under similar conditions should produce consistent results that others can reproduce.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">✅</span><div><h4>Validity</h4><p>The method must actually measure what it claims to measure — not a proxy or approximation.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">⚖️</span><div><h4>Ethical Conduct</h4><p>No plagiarism, no fabricated data, no falsified results. Proper citation of all sources.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Types of Research</div>
+    <div class="types-grid">
+      <div class="type-card"><span class="icon">🔬</span><h4>Basic Research</h4><p>Expands scientific knowledge without an immediate commercial application.</p></div>
+      <div class="type-card"><span class="icon">🔧</span><h4>Applied Research</h4><p>Solves a specific practical engineering problem using existing knowledge.</p></div>
+      <div class="type-card"><span class="icon">📊</span><h4>Descriptive Research</h4><p>Describes an existing phenomenon by collecting and analyzing data without manipulating variables.</p></div>
+      <div class="type-card"><span class="icon">⚗️</span><h4>Experimental Research</h4><p>Investigates cause-and-effect relationships through controlled experiments.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Qualities of a Good Researcher</div>
+    <div class="pill-group">
+      <span class="pill">Honesty</span>
+      <span class="pill">Objectivity</span>
+      <span class="pill">Accuracy</span>
+      <span class="pill">Patience</span>
+      <span class="pill">Curiosity</span>
+      <span class="pill">Critical Thinking</span>
+      <span class="pill">Creativity</span>
+      <span class="pill">Analytical Ability</span>
+      <span class="pill">Communication Skills</span>
+      <span class="pill">Time Management</span>
+    </div>
+  </div>
+
+  <div class="key-takeaway">
+    <h3>Key Takeaway</h3>
+    <p>"Scientific research begins with a clear question or problem, uses an appropriate methodology to investigate it, relies on evidence and data, and leads to conclusions that can be evaluated and verified."</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     LECTURE 2
+════════════════════════════════════════════════════════ -->
+<div class="lecture-panel" id="lec-2" data-lec="2">
+
+  <div class="lec-hero" data-lec="2">
+    <div class="lec-num">Lecture 2</div>
+    <h2>Scientific Writing &amp; Research Paper Structure</h2>
+    <p class="tagline">How to structure, write, and present a research paper that communicates clearly and professionally.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Standard Paper Structure</div>
+    <div class="flow-steps" data-lec="2">
+      <div class="flow-step">
+        <div class="step-circle">T</div>
+        <div class="step-body"><h4>Title</h4><p>Specific, clear, and concise. It tells the reader exactly what is being studied. <em>"Effect of Loading Conditions on the Thermal Performance of Distribution Transformers"</em> — not just <em>"Transformer Study."</em></p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">A</div>
+        <div class="step-body"><h4>Abstract</h4><p>A self-contained mini-paper: Problem → Objective → Method → Results → Conclusion. Usually 150–250 words.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">I</div>
+        <div class="step-body"><h4>Introduction</h4><p>Moves from broad context → specific problem → research gap → objective. Explains <em>why</em> the study is necessary.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">M</div>
+        <div class="step-body"><h4>Methodology</h4><p>Detailed enough that another researcher could replicate the study. Describes equipment, procedures, variables, and analysis methods.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">R</div>
+        <div class="step-body"><h4>Results</h4><p>Presents findings objectively — data, tables, figures. No interpretation here; just what was measured.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">D</div>
+        <div class="step-body"><h4>Discussion</h4><p>Interprets the results. Explains why they occurred, compares with existing literature, discusses limitations.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">C</div>
+        <div class="step-body"><h4>Conclusion</h4><p>Directly answers the research objectives. Summarizes findings without introducing new results or excessive detail.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Writing Concepts</div>
+
+    <div class="concept-card">
+      <h4>Research Problem vs. Research Question</h4>
+      <p><strong>Problem:</strong> Increased harmonic distortion in industrial power systems may result in additional transformer losses and thermal stress.<br>
+      <strong>Question:</strong> How does harmonic distortion level affect transformer temperature under varying load conditions?</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Research Gap</h4>
+      <p>An area where existing knowledge is <em>incomplete, inconsistent, or insufficient</em>. Your research fills this gap. A strong introduction clearly identifies the gap before stating objectives.</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Hypothesis</h4>
+      <p><strong>Null (H₀):</strong> Harmonic distortion has no statistically significant effect on transformer temperature.<br>
+      <strong>Alternative (H₁):</strong> Harmonic distortion has a statistically significant effect on transformer temperature.</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Literature Review — Synthesis, Not Summary</h4>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <h5 style="color: #f97340;">Weak (just a list)</h5>
+          <ul>
+            <li>Smith (2022) studied transformers.</li>
+            <li>Ahmed (2023) studied harmonics.</li>
+            <li>Ali (2024) studied power quality.</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <h5 style="color: var(--l2);">Strong (synthesized)</h5>
+          <ul>
+            <li>Compare findings across studies</li>
+            <li>Identify contradictions and gaps</li>
+            <li>Evaluate methodologies used</li>
+            <li>Connect to your own research gap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <h4>Results vs. Discussion</h4>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <h5 style="color: var(--l2);">Results</h5>
+          <ul>
+            <li>State what was measured</li>
+            <li>"Temperature increased by 12°C when THD rose from 5% to 20%"</li>
+            <li>Objective — no interpretation</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <h5 style="color: var(--l2);">Discussion</h5>
+          <ul>
+            <li>Explain why it happened</li>
+            <li>"This may be attributed to harmonic-related losses in the windings and core"</li>
+            <li>Compare with literature</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Academic Language Tips</div>
+    <div class="compare-grid">
+      <div class="compare-col">
+        <h5 style="color: #f97340;">Non-scientific</h5>
+        <ul>
+          <li>"The transformer became very hot"</li>
+          <li>"Loading was too high"</li>
+          <li>"I think solar energy is best"</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h5 style="color: var(--l2);">Scientific</h5>
+        <ul>
+          <li>"Top-oil temperature reached 92°C"</li>
+          <li>"Loading exceeded 90% of rated capacity"</li>
+          <li>"The PV system reduced consumption by 18%"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="example-box" data-lec="2">
+      <div class="ex-label">Citation — IEEE Style</div>
+      <p>In-text: <code>Transformer losses increase under harmonic loading [1].</code><br>
+      Multiple: <code>Previous studies reported similar findings [1]–[3].</code><br>
+      The full reference goes in the reference list at the end of the paper.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Research Ethics</div>
+    <div class="traits-list">
+      <div class="trait-item"><span class="trait-icon">❌</span><div><h4>Plagiarism</h4><p>Using someone else's work or ideas without acknowledgment.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">❌</span><div><h4>Fabrication</h4><p>Inventing measurements or experimental results that were never obtained.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">❌</span><div><h4>Falsification</h4><p>Changing or manipulating data to obtain a desired conclusion.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">❌</span><div><h4>Misrepresentation</h4><p>Presenting results in a misleading way to support an argument.</p></div></div>
+    </div>
+  </div>
+
+  <div class="key-takeaway">
+    <h3>Key Takeaway</h3>
+    <p>A well-structured paper guides the reader from problem to solution in a logical, evidence-based flow: Title → Abstract → Introduction → Methods → Results → Discussion → Conclusion. Each section has one clear job — do not mix them.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     LECTURE 3
+════════════════════════════════════════════════════════ -->
+<div class="lecture-panel" id="lec-3" data-lec="3">
+
+  <div class="lec-hero" data-lec="3">
+    <div class="lec-num">Lecture 3</div>
+    <h2>Statistical Data Analysis</h2>
+    <p class="tagline">The tools to turn raw numbers into meaningful, defensible scientific conclusions.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Stages of Data Analysis</div>
+    <div class="flow-steps" data-lec="3">
+      <div class="flow-step">
+        <div class="step-circle">1</div>
+        <div class="step-body"><h4>Data Cleaning</h4><p>Identify and correct incorrect values, outliers, unit errors, and data-entry mistakes. Never delete a suspicious value without investigating it first.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">2</div>
+        <div class="step-body"><h4>Data Organization</h4><p>Arrange data in a structured table so that patterns and relationships become visible.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">3</div>
+        <div class="step-body"><h4>Descriptive Analysis</h4><p>Summarize the dataset using mean, median, mode, range, variance, and standard deviation.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">4</div>
+        <div class="step-body"><h4>Inferential Analysis</h4><p>Use statistical tests (t-tests, ANOVA, regression) to draw conclusions beyond the observed sample.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">5</div>
+        <div class="step-body"><h4>Interpretation</h4><p>Explain what the results mean in relation to your research questions and hypotheses.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Descriptive Statistics</div>
+
+    <div class="concept-card">
+      <h4>Mean (Average)</h4>
+      <p>The sum of all values divided by the number of values. As the number of measurements increases, the mean becomes a better estimate of the true value.</p>
+    </div>
+    <div class="formula-block">
+      <span class="formula-label">Formula</span>
+      x̄ = (x₁ + x₂ + ... + xₙ) / n
+    </div>
+
+    <div class="concept-card">
+      <h4>Median</h4>
+      <p>The middle value when data is arranged in ascending order. For an even number of values, take the average of the two middle values. As n increases, mean ≈ median.</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Mode</h4>
+      <p>The most frequently occurring value. A dataset can have one mode, more than one mode, or no mode at all.</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Range</h4>
+      <p>The difference between the maximum and minimum values. A smaller range indicates more consistent measurements.</p>
+    </div>
+    <div class="formula-block">
+      <span class="formula-label">Formula</span>
+      Range = x_max − x_min
+    </div>
+
+    <div class="concept-card highlight">
+      <h4>Standard Deviation (σ) — Most Important Measure of Spread</h4>
+      <p>Indicates how far measurements tend to deviate from the mean.</p>
+      <div class="compare-grid" style="margin-top:12px;">
+        <div class="compare-col">
+          <h5 style="color:var(--l2);">Small σ</h5>
+          <ul><li>Measurements close to the mean</li><li>High precision / reliability</li></ul>
+        </div>
+        <div class="compare-col">
+          <h5 style="color:#f97340;">Large σ</h5>
+          <ul><li>Measurements widely spread</li><li>Lower precision, investigate why</li></ul>
+        </div>
+      </div>
+      <div class="example-box" data-lec="3" style="margin-top:12px;">
+        <div class="ex-label">Example</div>
+        <p>Group A: 49, 50, 51 — small σ &nbsp;|&nbsp; Group B: 30, 50, 70 — large σ<br>Both have the same mean (50) but very different reliability. The mean alone is not enough.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Variance and Standard Deviation — Formulas</div>
+    <div class="formula-block">
+      <span class="formula-label">Deviation of each measurement from the mean</span>
+      dᵢ = xᵢ − x̄
+    </div>
+    <div class="formula-block">
+      <span class="formula-label">Variance</span>
+      v = Σdᵢ² / (n − 1)
+    </div>
+    <div class="formula-block">
+      <span class="formula-label">Standard Deviation</span>
+      σ = √v = √[ Σdᵢ² / (n − 1) ]
+    </div>
+    <div class="concept-card">
+      <h4>What do these values tell you?</h4>
+      <ul>
+        <li>High variance / σ → <strong>low precision</strong> (data is spread out)</li>
+        <li>Low variance / σ → <strong>high precision</strong> (data is clustered around the mean)</li>
+        <li>The dataset with the <strong>smallest σ</strong> is the most reliable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Measurement Set Comparison Example</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Set</th><th>Sample Values (mm)</th><th>Mean</th><th>Range</th><th>Confidence</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A</td><td>398, 420, 394, 416, 404 ...</td><td>408.5</td><td>36</td><td style="color:#f97340;">Lower</td></tr>
+        <tr><td>B</td><td>402, 404, 404, 405, 406 ...</td><td>406.4</td><td>7</td><td style="color:var(--l2);">Higher</td></tr>
+        <tr><td>C (B×23)</td><td>409, 406, 402, 407 ...</td><td>406.5</td><td>8</td><td style="color:var(--l2);">Highest</td></tr>
+      </tbody>
+    </table>
+    <div class="example-box" data-lec="3">
+      <div class="ex-label">Key Insight</div>
+      <p>Set B is more reliable than Set A because its spread (range = 7) is much smaller than Set A (range = 36). As you add more measurements (Set C), the mean and median values converge — confirming reliability. <strong>Smaller spread = more confidence in the mean.</strong></p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What Questions Can Data Analysis Answer?</div>
+    <div class="objectives-grid" data-lec="3">
+      <div class="obj-item"><span class="obj-num" style="color:var(--l3);">?</span><p>Is there a trend in the data?</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l3);">?</span><p>Is there a relationship between variables?</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l3);">?</span><p>Is there a significant difference between groups?</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l3);">?</span><p>Does one variable affect another?</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l3);">?</span><p>Do the results support the research hypothesis?</p></div>
+    </div>
+  </div>
+
+  <div class="key-takeaway">
+    <h3>Key Takeaway</h3>
+    <p>The mean tells you the center. The standard deviation tells you how trustworthy that center is. Always report both — a result without a measure of spread is an incomplete result.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     LECTURE 4
+════════════════════════════════════════════════════════ -->
+<div class="lecture-panel" id="lec-4" data-lec="4">
+
+  <div class="lec-hero" data-lec="4">
+    <div class="lec-num">Lecture 4</div>
+    <h2>Data Presentation</h2>
+    <p class="tagline">How to present your findings visually and clearly — using the right tool for the right data.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Core Principle</div>
+    <div class="concept-card highlight">
+      <h4>Quality Over Quantity</h4>
+      <p>Use only data that are <strong>directly pertinent to your conclusions</strong>. Do not try to impress readers with how much data you have collected. Quantity is no substitute for quality in presenting technical results.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Three Methods of Presentation</div>
+    <div class="types-grid">
+      <div class="type-card"><span class="icon">📈</span><h4>Figures</h4><p>Best for complex data, trends, and relationships. Graphs, diagrams, and drawings. Preferred when patterns are hard to see in a table.</p></div>
+      <div class="type-card"><span class="icon">📋</span><h4>Tables</h4><p>Present precise values. Use when exact numbers matter. Tables are the <em>least preferred</em> method — keep them brief and simple.</p></div>
+      <div class="type-card"><span class="icon">📝</span><h4>Text</h4><p>Narrate and interpret findings. Tables and figures do not replace text — they supplement it.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Rules for Figures</div>
+    <div class="traits-list">
+      <div class="trait-item"><span class="trait-icon">🔢</span><div><h4>Numbering</h4><p>Figures are numbered with <strong>Arabic numerals</strong> in order of first mention: Figure 1, Figure 2, ...</p></div></div>
+      <div class="trait-item"><span class="trait-icon">🏷️</span><div><h4>Title Location</h4><p>Figure titles appear <strong>below</strong> the figure itself, with a short, concise description.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">📍</span><div><h4>Placement</h4><p>Insert figures in the text <strong>near their first mention</strong>. Always refer to every figure in the text.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">📖</span><div><h4>Legends</h4><p>All figures must have legends — a figure that cannot be understood without reading the full paper fails its purpose.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">🎨</span><div><h4>Types</h4><p>Graphs (line, bar, scatter), Diagrams (circuit diagrams, flow charts), and Drawings (schematics, illustrations).</p></div></div>
+    </div>
+    <div class="example-box" data-lec="4">
+      <div class="ex-label">Example Usage</div>
+      <p>"The single-diode model, shown in <strong>Fig. 1</strong>, has become the most widely used model as it offers a good compromise between simplicity and accuracy."<br><br>
+      → Always cite the figure number in the text before the reader reaches it.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Rules for Tables</div>
+    <div class="traits-list">
+      <div class="trait-item"><span class="trait-icon">🔢</span><div><h4>Numbering</h4><p>Use <strong>Roman numerals</strong> (Table I, Table II...) unless there are 20+ tables, in which case Arabic numerals are used.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">🏷️</span><div><h4>Title Location</h4><p>Table titles appear <strong>above</strong> the table (opposite to figures!).</p></div></div>
+      <div class="trait-item"><span class="trait-icon">📐</span><div><h4>Units</h4><p>Place units under the column title or beside the row title, enclosed in parentheses — e.g., <code>Temperature (°C)</code>.</p></div></div>
+      <div class="trait-item"><span class="trait-icon">✂️</span><div><h4>Keep It Simple</h4><p>Tables are not a replacement for text — keep them as brief and self-explanatory as possible.</p></div></div>
+    </div>
+    <div class="compare-grid" style="margin-top:16px;">
+      <div class="compare-col">
+        <h5 style="color:var(--l4);">Figure Title</h5>
+        <ul><li>Appears <strong>below</strong> the figure</li><li>Arabic numerals (Figure 1, 2 ...)</li><li>Short and concise</li></ul>
+      </div>
+      <div class="compare-col">
+        <h5 style="color:var(--l4);">Table Title</h5>
+        <ul><li>Appears <strong>above</strong> the table</li><li>Roman numerals (Table I, II ...)</li><li>Must be titled if numbered</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Symbols &amp; Notation</div>
+    <div class="objectives-grid" data-lec="4">
+      <div class="obj-item"><span class="obj-num" style="color:var(--l4);">1</span><p>Define each symbol in the text the first time it appears.</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l4);">2</span><p>If many symbols are used, group definitions in a "Symbols" section.</p></div>
+      <div class="obj-item"><span class="obj-num" style="color:var(--l4);">3</span><p>When a symbol list exceeds 30 items, place it in an Appendix.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Quick Reference — When to Use What</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Situation</th><th>Best Method</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Show a trend over time</td><td>Line graph (Figure)</td></tr>
+        <tr><td>Compare groups side by side</td><td>Bar chart (Figure)</td></tr>
+        <tr><td>Show exact numerical values</td><td>Table</td></tr>
+        <tr><td>Explain a circuit or system</td><td>Diagram (Figure)</td></tr>
+        <tr><td>Data is too complex for a table</td><td>Figure</td></tr>
+        <tr><td>Narrate and interpret findings</td><td>Text</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="key-takeaway">
+    <h3>Key Takeaway</h3>
+    <p>Every figure and table must add value — not just fill space. If a reader can understand your result from the text alone, the figure is unnecessary. If a figure makes a pattern obvious that text would struggle to describe, it is essential.</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+  function switchTab(n) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.lecture-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`.tab-btn[data-lec="${n}"]`).classList.add('active');
+    document.getElementById(`lec-${n}`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
